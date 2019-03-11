@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{{ partial "head.html" . }}
+</head>
+<body>
+
+	{{ partial "header.html" . }}
+
+    <section id="news">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2>{{ .Site.Params.blog.title }}</h2>
+                        <p>{{ .Site.Params.blog.subtitle }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="row posts">
+
+                {{ $paginator := .Paginate (where .Data.Pages "Type" "news") }}
+                {{ range $paginator.Pages }}
+
+
+                <div class="col-md-6 ">
+
+                    <div class="post">
+                        <div class="post-thumb">
+                        <a href="{{ .RelPermalink }}">  
+                            <img class="img-responsive" src="{{ .Params.image }}" alt="{{ .Params.alt | default .Params.title }}">
+                        </a>
+                        </div>
+                        <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                        <div class="post-meta">
+                        <ul>
+                            <li>
+                            <i class="ion-calendar"></i> {{ .PublishDate.Format "2, Jan 2006" }}
+                            </li>
+                            <li>
+                            <i class="ion-android-people"></i> Posted by {{ .Params.author }}
+                            </li>
+                            <li>
+                            <a href=""><i class="ion-pricetags"></i> LIFESTYLE</a>,<a href=""> TRAVEL</a>, <a
+                            href="">FASHION</a>
+                            </li>
+                            
+                        </ul>
+                        </div>
+                        <div class="post-content">
+                            <p>{{ .Summary  }}</p>
+
+                        {{ if .Summary }}
+                            <a href="{{ .RelPermalink }}" class="btn btn-main">Read More</a>
+                        {{ end }}
+    
+                        </div>
+                    </div>
+
+                </div>
+                {{ end }}
+
+            </div>
+
+            <div class="text-center">
+                {{ template "_internal/pagination.html" . }}
+            </div>
+
+        </div>
+      
+    </section>
+
+	{{ if and (isset .Site.Params "call") (.Site.Params.call.enable) }}
+		{{ partial "call-to-action.html" . }}
+	{{ end }}
+
+	{{ partial "footer.html" . }}
+
+	
+</body>
+</html>
